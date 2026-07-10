@@ -1,16 +1,15 @@
 'use client'
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+const WorkShowcase = () => {
+  const [currentWorkIndex, setCurrentWorkIndex] = useState(0);
+  const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const videoRef = useRef(null);
+  const containerRef = useRef(null);
 
-const WorkCatalog = () => {
-  const [hoveredVideo, setHoveredVideo] = useState(null);
-  const [playingVideo, setPlayingVideo] = useState(null);
-
-  // Work catalog data with video information
+  // Work data with video sources
   const works = [
     {
       id: 1,
@@ -18,9 +17,7 @@ const WorkCatalog = () => {
       client: "TechVision Studios",
       category: "Brand Campaign",
       description: "A cinematic journey through digital innovation, showcasing how cutting-edge technology transforms brand narratives into immersive experiences.",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      thumbnail: "https://images.unsplash.com/photo-1579783902614-e3fb5141b0cb?w=800&auto=format&fit=crop&q=80",
-      duration: "3:45",
+      videoUrl: "first.mp4",
       year: "2024",
       tags: ["Motion Graphics", "3D Animation", "Branding"]
     },
@@ -30,9 +27,7 @@ const WorkCatalog = () => {
       client: "Luxe Brands Inc",
       category: "Product Showcase",
       description: "An elegant exploration of premium craftsmanship, blending minimalist aesthetics with dynamic visual storytelling to elevate brand perception.",
-      videoUrl: "https://www.youtube.com/embed/jNQXAC9IVRw",
-      thumbnail: "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=800&auto=format&fit=crop&q=80",
-      duration: "4:12",
+      videoUrl: "second.mp4",
       year: "2024",
       tags: ["Luxury", "Product Video", "Cinematography"]
     },
@@ -42,268 +37,252 @@ const WorkCatalog = () => {
       client: "Quantum Labs",
       category: "Corporate Video",
       description: "A visionary narrative exploring the intersection of innovation and human connection, crafted to inspire and captivate global audiences.",
-      videoUrl: "https://www.youtube.com/embed/9bZkp7q19f0",
-      thumbnail: "https://images.unsplash.com/photo-1536240478547-d4b88589f880?w=800&auto=format&fit=crop&q=80",
-      duration: "5:30",
+      videoUrl: "third.mp4",
       year: "2024",
       tags: ["Corporate", "Innovation", "Storytelling"]
     }
   ];
 
-  useGSAP(() => {
-    // Header animations
-    const headerTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#work_catalog",
-        start: "top 60%",
-        markers: false,
+  const currentWork = works[currentWorkIndex];
+
+  // Handle video ended - loop to next or restart
+  useEffect(() => {
+    const handleVideoEnd = () => {
+      if (isAutoPlay) {
+        setCurrentWorkIndex((prev) => (prev + 1) % works.length);
       }
-    });
+    };
 
-    headerTl.from(".work_header", {
-      opacity: 0,
-      y: 40,
-      duration: 0.8,
-      ease: "power3.out"
-    })
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.addEventListener('ended', handleVideoEnd);
+      return () => videoElement.removeEventListener('ended', handleVideoEnd);
+    }
+  }, [isAutoPlay, works.length]);
 
-    headerTl.from(".work_subtitle", {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.6")
+  // GSAP animations
+  useGSAP(() => {
+    if (containerRef.current) {
+      // Animate info panel on mount and when video changes
+      gsap.fromTo(
+        ".info_panel",
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+      );
 
-    // Video cards animations
-    gsap.from(".video_card", {
-      scrollTrigger: {
-        trigger: ".video_cards_container",
-        start: "top 70%",
-        markers: false,
-      },
-      opacity: 0,
-      y: 60,
-      stagger: 0.2,
-      duration: 0.8,
-      ease: "power3.out"
-    })
-  }, []);
+      gsap.fromTo(
+        ".video_title",
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.8, ease: "power3.out", delay: 0.1 }
+      );
+
+      gsap.fromTo(
+        ".video_description",
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.8, ease: "power3.out", delay: 0.2 }
+      );
+
+      gsap.fromTo(
+        ".video_meta",
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.8, ease: "power3.out", delay: 0.3 }
+      );
+
+      gsap.fromTo(
+        ".video_tags",
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.8, ease: "power3.out", delay: 0.4 }
+      );
+    }
+  }, [currentWorkIndex]);
+
+  const goToNext = () => {
+    setCurrentWorkIndex((prev) => (prev + 1) % works.length);
+    setIsAutoPlay(false);
+  };
+
+  const goToPrev = () => {
+    setCurrentWorkIndex((prev) => (prev - 1 + works.length) % works.length);
+    setIsAutoPlay(false);
+  };
+
+  const goToWork = (index) => {
+    setCurrentWorkIndex(index);
+    setIsAutoPlay(false);
+  };
 
   return (
-    <section id="work_catalog" className="relative min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden py-16 sm:py-24 md:py-32 lg:py-40">
+    <div
+      ref={containerRef}
+      className="relative w-full min-h-screen bg-black overflow-hidden"
+    >
+      {/* Full-Screen Video Background */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <video
+          ref={videoRef}
+          key={currentWork.videoUrl}
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src={currentWork.videoUrl} type="video/mp4" />
+        </video>
 
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl opacity-30" />
-        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-amber-600/5 rounded-full blur-3xl opacity-20" />
-        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-amber-400/5 rounded-full blur-3xl opacity-15" />
+        {/* Video Overlay Gradient - Premium Dark Fade */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       </div>
 
-      <div className="relative z-10">
-        {/* Header Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 mb-16 sm:mb-20 md:mb-24 lg:mb-32">
-          <div className="space-y-6 sm:space-y-8">
+      {/* Content Overlay */}
+      <div className="relative z-10 w-full h-full flex flex-col justify-between p-6 sm:p-8 md:p-12 lg:p-16">
+        {/* Top Section - Header */}
+        <div className="flex justify-between items-start">
+          <div className="space-y-2">
             <span className="inline-block text-xs sm:text-sm font-semibold uppercase tracking-widest text-amber-400/80 font-inter">
               Our Portfolio
             </span>
-
-            <h1 className="work_header text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bebas uppercase tracking-wider leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bebas uppercase tracking-wider text-white">
               Our Work
             </h1>
+          </div>
 
-            <p className="work_subtitle max-w-3xl text-base sm:text-lg md:text-xl text-white/70 font-light leading-relaxed">
-              Explore our collection of cinematic masterpieces. Each project represents our commitment to storytelling, innovation, and visual excellence. From brand campaigns to corporate narratives, witness how we transform visions into compelling visual experiences.
+          {/* Counter */}
+          <div className="text-right">
+            <p className="text-sm sm:text-base font-mono text-white/60">
+              <span className="text-amber-400 font-semibold text-lg sm:text-xl">
+                {String(currentWorkIndex + 1).padStart(2, '0')}
+              </span>
+              <span className="text-white/40"> / {String(works.length).padStart(2, '0')}</span>
             </p>
           </div>
         </div>
 
-        {/* Video Cards Container */}
-        <div className="video_cards_container max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
-            {works.map((work) => (
-              <div
-                key={work.id}
-                className="video_card group relative flex flex-col h-full"
-                onMouseEnter={() => setHoveredVideo(work.id)}
-                onMouseLeave={() => setHoveredVideo(null)}
+        {/* Middle Section - Information Panel */}
+        <div className="info_panel max-w-2xl space-y-6 sm:space-y-8">
+          {/* Title and Client */}
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-amber-400 to-amber-600" />
+              <span className="text-xs sm:text-sm uppercase tracking-widest text-amber-400/80 font-inter font-semibold">
+                {currentWork.category}
+              </span>
+            </div>
+
+            <h2 className="video_title text-5xl sm:text-6xl md:text-7xl font-bebas uppercase tracking-wider text-white leading-tight">
+              {currentWork.title}
+            </h2>
+
+            <p className="text-base sm:text-lg md:text-xl text-amber-400/90 font-inter font-medium">
+              {currentWork.client}
+            </p>
+          </div>
+
+          {/* Description */}
+          <p className="video_description text-sm sm:text-base md:text-lg text-white/80 font-light leading-relaxed max-w-xl">
+            {currentWork.description}
+          </p>
+
+          {/* Tags */}
+          <div className="video_tags flex flex-wrap gap-2 sm:gap-3">
+            {currentWork.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="inline-block text-xs sm:text-sm uppercase tracking-wider px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-amber-400/50 text-amber-400/90 hover:border-amber-400 hover:text-amber-400 transition-all duration-300 cursor-pointer"
               >
-                {/* Video Container */}
-                <div className="relative overflow-hidden rounded-lg aspect-video bg-black mb-6 sm:mb-8">
-                  {/* Thumbnail/Video Background */}
-                  <div className="absolute inset-0 w-full h-full">
-                    <img
-                      src={work.thumbnail}
-                      alt={work.title}
-                      className="w-full h-full object-cover filter brightness-75 group-hover:brightness-100 transition-all duration-700 ease-out group-hover:scale-105"
-                    />
-                    {/* Overlay gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/40 transition-all duration-700" />
-                  </div>
-
-                  {/* Play Button - Centered */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button
-                      onClick={() => setPlayingVideo(work.id)}
-                      className="relative group/play w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-500 hover:bg-amber-400 transition-all duration-500 flex items-center justify-center shadow-2xl hover:shadow-amber-500/50 transform group-hover:scale-110"
-                    >
-                      <svg
-                        className="w-6 h-6 sm:w-8 sm:h-8 text-slate-950 ml-1"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {/* Video Duration Badge */}
-                  <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm px-3 py-1 rounded-full">
-                    <span className="text-xs sm:text-sm font-mono text-amber-400">
-                      {work.duration}
-                    </span>
-                  </div>
-
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4 bg-amber-500/90 backdrop-blur-sm px-3 py-1 rounded-full">
-                    <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-slate-950">
-                      {work.category}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Video Information Section */}
-                <div className="flex flex-col space-y-4 sm:space-y-5 flex-grow">
-                  {/* Title and Client */}
-                  <div className="space-y-2">
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-white font-rubik group-hover:text-amber-400 transition-colors duration-500">
-                      {work.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-amber-400/80 font-inter font-medium">
-                      {work.client}
-                    </p>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-sm sm:text-base text-white/60 font-light leading-relaxed line-clamp-3">
-                    {work.description}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {work.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="inline-block text-xs uppercase tracking-wider px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70 hover:border-amber-400/50 hover:text-amber-400/80 transition-all duration-300"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Meta Information */}
-                  <div className="flex items-center justify-between pt-4 border-t border-white/10 mt-auto">
-                    <span className="text-xs sm:text-sm uppercase tracking-widest text-white/50 font-mono">
-                      {work.year}
-                    </span>
-                    <button className="group/link flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors duration-300">
-                      <span className="text-xs sm:text-sm uppercase tracking-wider font-semibold">
-                        View Project
-                      </span>
-                      <svg
-                        className="w-4 h-4 group-hover/link:translate-x-1 transition-transform duration-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
+                {tag}
+              </span>
             ))}
+          </div>
+
+          {/* Meta Information */}
+          <div className="video_meta flex items-center gap-6 sm:gap-8 pt-4 border-t border-white/10">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-white/50 font-inter mb-1">
+                Year
+              </p>
+              <p className="text-lg sm:text-xl font-semibold text-white">
+                {currentWork.year}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-white/50 font-inter mb-1">
+                Status
+              </p>
+              <p className="text-lg sm:text-xl font-semibold text-amber-400">
+                Completed
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Video Modal */}
-        {playingVideo && (
-          <div
-            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn"
-            onClick={() => setPlayingVideo(null)}
-          >
-            {/* Close Button */}
+        {/* Bottom Section - Navigation and Controls */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 sm:gap-8">
+          {/* Navigation Dots */}
+          <div className="flex gap-3 sm:gap-4">
+            {works.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToWork(index)}
+                className={`transition-all duration-500 ${
+                  index === currentWorkIndex
+                    ? 'w-8 sm:w-10 h-1 bg-amber-400'
+                    : 'w-2 h-1 bg-white/30 hover:bg-white/60'
+                }`}
+                aria-label={`Go to work ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="flex items-center gap-4 sm:gap-6">
+            {/* Play/Pause Button */}
             <button
-              onClick={() => setPlayingVideo(null)}
-              className="absolute top-6 right-6 text-white hover:text-amber-400 transition-colors duration-300 z-60"
+              onClick={() => setIsAutoPlay(!isAutoPlay)}
+              className="group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-white/30 hover:border-amber-400 text-white/60 hover:text-amber-400 transition-all duration-500"
+              title={isAutoPlay ? "Pause" : "Play"}
             >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              {isAutoPlay ? (
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button>
+
+            {/* Previous Button */}
+            <button
+              onClick={goToPrev}
+              className="group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-white/30 hover:border-amber-400 text-white/60 hover:text-amber-400 transition-all duration-500"
+              aria-label="Previous work"
+            >
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
             </button>
 
-            {/* Video Container */}
-            <div className="w-full max-w-4xl aspect-video rounded-lg overflow-hidden shadow-2xl">
-              <iframe
-                width="100%"
-                height="100%"
-                src={`${works.find(w => w.id === playingVideo)?.videoUrl}?autoplay=1`}
-                title="Project Video"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        )}
-
-        {/* CTA Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 mt-20 sm:mt-24 md:mt-32 pt-16 sm:pt-20 md:pt-24 border-t border-white/10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
-            {/* Left: Text */}
-            <div className="space-y-6 sm:space-y-8">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bebas uppercase tracking-wider leading-tight">
-                Ready to Create Something Extraordinary?
-              </h2>
-              <p className="text-base sm:text-lg text-white/70 font-light leading-relaxed">
-                Let's collaborate on your next project. Whether you're looking to elevate your brand, launch a campaign, or tell your story, we're here to bring your vision to life with cinematic excellence.
-              </p>
-            </div>
-
-            {/* Right: CTA Button */}
-            <div className="flex flex-col sm:flex-row gap-4 md:justify-end">
-              <button className="group relative inline-flex items-center justify-center px-8 sm:px-10 md:px-12 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold uppercase tracking-wider rounded-lg hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-500 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-                <span className="relative">Start Your Project</span>
-              </button>
-              <button className="group relative inline-flex items-center justify-center px-8 sm:px-10 md:px-12 py-3 sm:py-4 border-2 border-amber-400/50 text-amber-400 font-semibold uppercase tracking-wider rounded-lg hover:border-amber-400 hover:shadow-lg hover:shadow-amber-400/20 transition-all duration-500">
-                <span className="relative">Learn More</span>
-              </button>
-            </div>
+            {/* Next Button */}
+            <button
+              onClick={goToNext}
+              className="group relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-amber-400 bg-amber-400/10 hover:bg-amber-400/20 text-amber-400 transition-all duration-500 shadow-lg shadow-amber-400/20 hover:shadow-amber-400/40"
+              aria-label="Next work"
+            >
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Fade-in animation for modal */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-      `}</style>
-    </section>
+      {/* Mobile Optimized Bottom Gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-40 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none z-5" />
+    </div>
   );
 };
 
-export default WorkCatalog;
+export default WorkShowcase;

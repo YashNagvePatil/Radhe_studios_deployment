@@ -4,7 +4,7 @@ const HeroSection = () => {
   return (
     <section className='w-screen'>
             <div className='h-full w-full'>
-                <video src="hero.mp4" autoPlay muted loop className='h-full w-full'></video>
+                <video src="hero.MOV" autoPlay muted loop className='h-full w-full bg-cover'></video>
             </div>
     </section>
   )

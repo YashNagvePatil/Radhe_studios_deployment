@@ -6,11 +6,10 @@ import WorkCatalog from "@/pages/OwrWork";
 export default function Home() {
   return (
    <>
-      <HeroSection/>
-      <Info/>
+       <HeroSection/>
+          <Info/>
       <ClientShowcase/>
-      <WorkCatalog/>
-
+        <WorkCatalog/>
    </>
   )
 }

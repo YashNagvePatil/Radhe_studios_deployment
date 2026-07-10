@@ -11,7 +11,7 @@ const Info = () => {
     {
       name: "Alex Rivera",
       role: "Co-Founder / Creative Director",
-      image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bW9kZWxzfGVufDB8fDB8fHww",
+      image: "founder.PNG",
       bio: "Pushing the boundaries of digital narrative for over a decade. Alex shapes the visual strategy and overarching artistic direction of every project."
     },
     {
