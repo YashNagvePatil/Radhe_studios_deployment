@@ -3,23 +3,30 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRouter } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const ClientShowcase = () => {
+  const router = useRouter()
   const marqueeRef = useRef(null);
   const marqueeInnerRef = useRef(null);
 
+
+  const handleNavigate = () => {
+    router.push("/contact");
+  };
+
   // Premium client logos - replace with your actual client logos
   const clients = [
-    { name: "TechVision", logo: "https://via.placeholder.com/200x80/1a1a2e/ffffff?text=TechVision" },
-    { name: "Luxe Brands", logo: "https://via.placeholder.com/200x80/16213e/ffffff?text=Luxe+Brands" },
-    { name: "Digital Forge", logo: "https://via.placeholder.com/200x80/0f3460/ffffff?text=Digital+Forge" },
-    { name: "Elite Studio", logo: "https://via.placeholder.com/200x80/1a1a2e/ffffff?text=Elite+Studio" },
-    { name: "Quantum Labs", logo: "https://via.placeholder.com/200x80/16213e/ffffff?text=Quantum+Labs" },
-    { name: "Zenith Creative", logo: "https://via.placeholder.com/200x80/0f3460/ffffff?text=Zenith+Creative" },
-    { name: "Apex Digital", logo: "https://via.placeholder.com/200x80/1a1a2e/ffffff?text=Apex+Digital" },
-    { name: "Prism Studios", logo: "https://via.placeholder.com/200x80/16213e/ffffff?text=Prism+Studios" },
+    { name: "Aethasadhana", logo: "/clients_logo/Aethasadhana.png" },
+    { name: "jayHindAcadadmy", logo: "/clients_logo/jayHindAcadadmy.png" },
+    { name: "Jindal-Seeds", logo: "/clients_logo/Jindal-Seeds.png" },
+    { name: "Vandana-Readymate.png", logo: "/clients_logo/Vandana-Readymate.png" },
+    { name: "Aethasadhana", logo: "/clients_logo/Aethasadhana.png" },
+    { name: "jayHindAcadadmy", logo: "/clients_logo/jayHindAcadadmy.png" },
+    { name: "Jindal-Seeds", logo: "/clients_logo/Jindal-Seeds.png" },
+    { name: "Vandana-Readymate.png", logo: "/clients_logo/Vandana-Readymate.png" },
   ];
 
   useGSAP(() => {
@@ -190,7 +197,7 @@ const ClientShowcase = () => {
             <button className="group relative inline-flex items-center justify-center px-8 sm:px-10 md:px-12 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold uppercase tracking-wider rounded-lg hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-500 overflow-hidden">
               {/* Button glow effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-              <span className="relative">Start Your Project</span>
+              <span className="relative" onClick={handleNavigate}>Start Your Project</span>
             </button>
           </div>
         </div>

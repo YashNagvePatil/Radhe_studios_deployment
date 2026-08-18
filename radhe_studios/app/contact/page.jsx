@@ -1,12 +1,13 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState,useRef} from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
+import emailjs from '@emailjs/browser';
+import {config} from "../../Config"
 gsap.registerPlugin(ScrollTrigger);
 
-const ContactUs = () => {
+const page = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,6 +17,8 @@ const ContactUs = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+    
+  const form = useRef();
 
   const contactInfo = [
     {
@@ -104,6 +107,19 @@ const ContactUs = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitMessage('');
+    
+    try{
+      await emailjs.sendForm(
+      config.EMAIL_SERVICE_ID,
+      config.EMAIL_TEMPLETE_ID,
+      form.current,
+      config.EMAIL_PUBLICE_KEY
+    );
+    } catch (error){
+      console.log(error);
+    }
+    
 
     // Simulate form submission
     setTimeout(() => {
@@ -113,7 +129,7 @@ const ContactUs = () => {
         email: '',
         phone: '',
         subject: '',
-        message: ''
+        message: '',
       });
       setIsSubmitting(false);
 
@@ -357,4 +373,4 @@ const ContactUs = () => {
   );
 };
 
-export default ContactUs;
+export default page;

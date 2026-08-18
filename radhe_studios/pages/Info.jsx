@@ -9,33 +9,32 @@ gsap.registerPlugin(ScrollTrigger)
 const Info = () => {
   const founders = [
     {
-      name: "Alex Rivera",
+      name: "Akshay Pawar",
       role: "Co-Founder / Creative Director",
-      image: "founder.PNG",
+      image: "Akshya pawar.PNG",
       bio: "Pushing the boundaries of digital narrative for over a decade. Alex shapes the visual strategy and overarching artistic direction of every project."
     },
     {
-      name: "Marcus Vance",
+      name: "Arya Jain",
       role: "Co-Founder / Technical Lead",
-      image: "https://images.unsplash.com/photo-1564485377539-4af72d1f6a2f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8bW9kZWxzfGVufDB8fDB8fHww",
+      image: "ARYA-JAIN.png",
       bio: "An architect of smooth interactive experiences. Marcus bridges the gap between complex engineering and pixel-perfect design interfaces."
     }
   ];
 
   const team = [
-    { name: "Elena Rostova", role: "Lead UI/UX Designer", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D" },
-    { name: "Siddharth Nair", role: "Motion Graphics Artist", image: "https://images.unsplash.com/photo-1526510747491-58f928ec870f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D" },
-    { name: "Chloe Dupont", role: "Brand Strategist", image: "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D" },
-    { name: "Jordan Kincaid", role: "Full-Stack Developer", image: "https://images.unsplash.com/photo-1611601322175-ef8ec8c85f01?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fG1vZGVsc3xlbnwwfHwwfHx8MA%3D%3D" }
+    { name: "Yash Nagve", role: "Mearn Stack dev/UX Designer", image: "/core_team/yash.jpeg" },
+    { name: "Om Ambat", role: "vedio Graphics Artist", image: "default.webp" },
+    { name: "Aditya Londhe", role: "Social Media Manager", image: "default.webp" },
+    { name: "Shivam Murtarker", role: "Full-Stack Developer", image: "default.webp" }
   ];
 
 
   return (
-    <section id='About_us' className="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-[#F9F9F9] min-h-screen font-inter selection:bg-white selection:text-black overflow-hidden"
+    <section id='About_us' className="bg-linear-to-b from-green-800 via-green-900 to-green-950 text-[#F9F9F9] min-h-screen font-inter selection:bg-white selection:text-black overflow-hidden"
       style={{
         backgroundImage: "linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%)"
       }}>
-
       {/* Decorative gradient orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl opacity-20" />

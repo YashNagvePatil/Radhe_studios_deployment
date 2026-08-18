@@ -22,10 +22,10 @@ const Footer = () => {
 
   // Services
   const services = [
-    { label: 'Brand Strategy', href: '#' },
-    { label: 'Web Design', href: '#' },
-    { label: 'Motion Graphics', href: '#' },
-    { label: 'Video Production', href: '#' }
+    { label: 'Political services', href: '#' },
+    { label: 'Social Media Services', href: '#' },
+    { label: 'Buisness Services', href: '#' },
+  
   ];
 
   // Social links
@@ -221,7 +221,7 @@ const Footer = () => {
                     href="mailto:hello@company.com"
                     className="text-sm text-white/70 hover:text-amber-400 transition-colors duration-300 font-light"
                   >
-                    hello@company.com
+                    Info@Radhestudios.com
                   </a>
                 </li>
                 <li>
@@ -280,12 +280,10 @@ const Footer = () => {
             {/* Left - Copyright and Brand */}
             <div className="space-y-3 sm:space-y-0">
               <div className="flex items-center gap-3 mb-3 sm:mb-0">
-                <div className="w-15 h-15  rounded-lg flex items-center justify-center">
-                  <span className="text-slate-950 font-bold text-sm"><img src="logo.png" alt="" /></span>
+                <div className="w-45 h-45  rounded-lg flex items-center justify-center">
+                  <span className="text-slate-950 font-bold text-sm"><img src="White-Line.png" alt="" /></span>
                 </div>
-                <span className="text-lg font-bebas uppercase tracking-wider text-white">
-                  Radhe Studios
-                </span>
+               
               </div>
               <p className="text-xs sm:text-sm text-white/50 font-light">
                 © 2024 Radhe Studios. All rights reserved.

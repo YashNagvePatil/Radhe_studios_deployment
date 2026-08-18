@@ -20,18 +20,18 @@ const Navbar = () => {
 
   // 💡 Updated array structure to handle special dropdown sub-links
   const Links = [
-    { name: 'About Us', href: '#About_us' },
+    { name: 'About Us', href: 'about_us' },
     { 
       name: 'Services', 
       href: 'services',
       subLinks: [
-        { name: 'Political Services', href: '/Services/politicalService' },
-        { name: 'Business Services', href: '/Services/BuisnessService' },
-        { name: 'Influencer Services', href: '/Services/influencerService' },
+        { name: 'Political Services', href: '/services/political' },
+        { name: 'Business Services', href: '/services/buisness' },
+        { name: 'Influencer Services', href: '/services/social_media' },
       ]
     },
-    { name: 'Clients', href: 'Clients'},
-    { name: 'Our Work', href: 'OurWork'},
+    // { name: 'Clients', href: 'Clients'},
+    // { name: 'Our Work', href: 'OurWork'},
     { name: 'Carrier', href: 'carrier'},
     { name: 'Contact Us', href: 'contact' },
   ]
@@ -73,7 +73,7 @@ const Navbar = () => {
           {/* Brand Logo */}
           <div className="shrink-0">
             <Link href="/" className="text-xl font-extrabold tracking-wider text-white font-bebas">
-              <img src="logo.png" alt="" className='w-45' />
+              <img src="/white-line-tranasperent.png" alt="" className='w-45 img-blend-darken ' />
             </Link>
           </div>
 
