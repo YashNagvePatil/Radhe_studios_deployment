@@ -22,9 +22,9 @@ const Footer = () => {
 
   // Services
   const services = [
-    { label: 'Political services', href: '#' },
-    { label: 'Social Media Services', href: '#' },
-    { label: 'Buisness Services', href: '#' },
+    { label: 'Political services', href: '/services/political' },
+    { label: 'Social Media Services', href: '/services/social_media' },
+    { label: 'Buisness Services', href: '/services/buisness' },
   
   ];
 
