@@ -1,5 +1,5 @@
-'use client'
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,21 +12,22 @@ const ClientShowcase = () => {
   const marqueeRef = useRef(null);
   const marqueeInnerRef = useRef(null);
 
-
-  const handleNavigate = () => {
-    router.push("/contact");
-  };
+   
+       const handleNavigate = () => {
+         router.push("/contact");
+      };
+ 
 
   // Premium client logos - replace with your actual client logos
   const clients = [
-    { name: "Aethasadhana", logo: "/clients_logo/Aethasadhana.png" },
-    { name: "jayHindAcadadmy", logo: "/clients_logo/jayHindAcadadmy.png" },
-    { name: "Jindal-Seeds", logo: "/clients_logo/Jindal-Seeds.png" },
-    { name: "Vandana-Readymate.png", logo: "/clients_logo/Vandana-Readymate.png" },
-    { name: "Aethasadhana", logo: "/clients_logo/Aethasadhana.png" },
-    { name: "jayHindAcadadmy", logo: "/clients_logo/jayHindAcadadmy.png" },
-    { name: "Jindal-Seeds", logo: "/clients_logo/Jindal-Seeds.png" },
-    { name: "Vandana-Readymate.png", logo: "/clients_logo/Vandana-Readymate.png" },
+    { name: "Aethasadhana", logo: "/clients_logo/Aethasadhana.webp" },
+    { name: "jayHindAcadadmy", logo: "/clients_logo/jayHindAcadadmy.webp" },
+    { name: "Jindal-Seeds", logo: "/clients_logo/Jindal-Seeds.webp" },
+    { name: "Vandana-Readymate", logo: "/clients_logo/Vandana-Readymate.webp" },
+    { name: "Aethasadhana", logo: "/clients_logo/Aethasadhana.webp" },
+    { name: "jayHindAcadadmy", logo: "/clients_logo/jayHindAcadadmy.webp" },
+    { name: "Jindal-Seeds", logo: "/clients_logo/Jindal-Seeds.webp" },
+    { name: "Vandana-Readymate", logo: "/clients_logo/Vandana-Readymate.webp" },
   ];
 
   useGSAP(() => {
@@ -150,27 +151,30 @@ const ClientShowcase = () => {
                 {[...clients, ...clients].map((client, index) => (
                   <div
                     key={index}
-                    className="group relative flex-shrink-0 w-48 sm:w-56 md:w-64 h-24 sm:h-28 md:h-32"
+                    className="group relative flex-shrink-0 w-52 sm:w-60 md:w-72 h-28 sm:h-32 md:h-36"
                   >
                     {/* Client logo container */}
-                    <div className="relative w-full h-full bg-gradient-to-br from-white/8 to-white/[0.02] border border-white/10 group-hover:border-amber-400/50 rounded-lg overflow-hidden transition-all duration-500 backdrop-blur-sm hover:shadow-2xl hover:shadow-amber-500/20">
+                    <div className="relative w-full h-full bg-white/[0.06] border border-amber-400/15 group-hover:border-amber-400/50 rounded-2xl overflow-hidden transition-all duration-500 backdrop-blur-md shadow-lg shadow-black/20 group-hover:shadow-2xl group-hover:shadow-amber-500/25 group-hover:bg-white/[0.1]">
+                      {/* Subtle inner glow */}
+                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.04] to-transparent" />
+
                       {/* Premium glow effect on hover */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-amber-400/0 to-amber-400/0 group-hover:from-amber-400/10 group-hover:to-amber-400/5 transition-all duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-amber-400/0 to-amber-400/0 group-hover:from-amber-400/10 group-hover:to-amber-500/5 transition-all duration-500" />
 
                       {/* Logo image */}
-                      <img
+                      <Image
                         src={client.logo}
                         alt={client.name}
-                        className="w-full h-full object-contain p-4 sm:p-5 md:p-6 filter brightness-90 group-hover:brightness-110 transition-all duration-500 group-hover:scale-105"
+                        width={240}
+                        height={120}
+                        className="relative z-10 w-full h-full object-contain p-5 sm:p-6 md:p-7 brightness-100 group-hover:brightness-110 transition-all duration-500 group-hover:scale-105 drop-shadow-[0_2px_8px_rgba(255,190,145,0.15)]"
                       />
 
-                      {/* Overlay gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
 
                     {/* Client name label on hover */}
                     <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:-bottom-6">
-                      <p className="text-xs sm:text-sm font-medium text-amber-400/80 whitespace-nowrap">
+                      <p className="text-xs sm:text-sm font-medium text-amber-400/90 whitespace-nowrap drop-shadow-[0_0_6px_rgba(251,191,36,0.3)]">
                         {client.name}
                       </p>
                     </div>
@@ -194,10 +198,10 @@ const ClientShowcase = () => {
             <p className="text-base sm:text-lg md:text-xl text-white/70 font-light">
               Ready to join our roster of premium brands?
             </p>
-            <button className="group relative inline-flex items-center justify-center px-8 sm:px-10 md:px-12 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold uppercase tracking-wider rounded-lg hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-500 overflow-hidden">
+            <button onClick={handleNavigate} className="group relative inline-flex items-center justify-center px-8 sm:px-10 md:px-12 py-3 sm:py-4 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold uppercase tracking-wider rounded-lg hover:shadow-2xl hover:shadow-amber-500/50 transition-all duration-500 overflow-hidden">
               {/* Button glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-              <span className="relative" onClick={handleNavigate}>Start Your Project</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 opacity-0 group-hover:opacity-20 transition-opacity duration-500 pointer-events-none" />
+              <span className="relative">Start Your Project</span>
             </button>
           </div>
         </div>

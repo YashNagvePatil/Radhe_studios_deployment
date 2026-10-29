@@ -1,6 +1,7 @@
-   "use client"
+'use client'
 
 import React from 'react';
+import Image from 'next/image';
 
 const  page = () => {
   const services = [
@@ -189,14 +190,15 @@ const  page = () => {
                 {/* Main Image Frame */}
                 <div className="relative p-1.5 bg-slate-900/90 border border-slate-800/90 rounded-xl shadow-2xl overflow-hidden backdrop-blur-sm">
                   <div className="relative overflow-hidden rounded-lg bg-slate-950 aspect-[16/10]">
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.imageAlt}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                       className="w-full h-full object-cover object-center grayscale-[15%] contrast-[1.05] group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-500 ease-out"
-                      loading="lazy"
                     />
                     {/* Subtle Overlay Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent group-hover:opacity-0 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent group-hover:opacity-0 transition-opacity pointer-events-none" />
                   </div>
                 </div>
 

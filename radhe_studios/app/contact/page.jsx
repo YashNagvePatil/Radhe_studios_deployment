@@ -1,10 +1,10 @@
 'use client'
-import React, { useState,useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import emailjs from '@emailjs/browser';
-import {config} from "../../Config"
+import { config } from "../../Config"
 gsap.registerPlugin(ScrollTrigger);
 
 const page = () => {
@@ -17,26 +17,26 @@ const page = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
-    
+
   const form = useRef();
 
   const contactInfo = [
     {
       icon: 'email',
       label: 'Email',
-      value: 'hello@snitch-studio.com',
-      link: 'mailto:hello@snitch-studio.com'
+      value: 'Info@Radhestudios.com',
+      link: 'Info@Radhestudios.com'
     },
     {
       icon: 'phone',
       label: 'Phone',
-      value: '+1 (234) 567-890',
-      link: 'tel:+1234567890'
+      value: '8010608195',
+      link: 'tel:+918010608195'
     },
     {
       icon: 'location',
       label: 'Address',
-      value: '123 Creative Street, Design City, DC 12345',
+      value: 'Shop No. 1 Shakun Plaza Near Domino’z Jalna-431203',
       link: '#'
     },
     {
@@ -48,52 +48,66 @@ const page = () => {
   ];
 
   useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#contact_page",
-        start: "top 30%",
-        markers: false,
-      }
-    });
+    // Header animation executes cleanly on page load
+    const tl = gsap.timeline();
 
     tl.from(".contact_header", {
       opacity: 0,
       y: 40,
       duration: 0.8,
-      ease: "power3.out"
+      ease: "power3.out",
+      clearProps: "all"
     })
+      .from(".contact_subtitle", {
+        opacity: 0,
+        y: 30,
+        duration: 0.8,
+        ease: "power3.out",
+        clearProps: "all"
+      }, "-=0.6");
 
-    tl.from(".contact_subtitle", {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: "power3.out"
-    }, "-=0.6")
-
+    // Contact info cards animation with once: true and clearProps
     gsap.from(".contact_info_card", {
       scrollTrigger: {
         trigger: ".contact_info_grid",
-        start: "top 70%",
-        markers: false,
+        start: "top 85%",
+        once: true,
       },
       opacity: 0,
       y: 30,
       stagger: 0.1,
       duration: 0.8,
-      ease: "power3.out"
-    })
+      ease: "power3.out",
+      clearProps: "all"
+    });
 
+    // Form section animation with once: true and clearProps
     gsap.from(".contact_form", {
       scrollTrigger: {
         trigger: ".contact_form",
-        start: "top 70%",
-        markers: false,
+        start: "top 85%",
+        once: true,
       },
       opacity: 0,
       y: 40,
       duration: 0.8,
-      ease: "power3.out"
-    })
+      ease: "power3.out",
+      clearProps: "all"
+    });
+
+    // CTA section animation
+    gsap.from(".contact_cta", {
+      scrollTrigger: {
+        trigger: ".contact_cta",
+        start: "top 85%",
+        once: true,
+      },
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "power3.out",
+      clearProps: "all"
+    });
   }, []);
 
   const handleInputChange = (e) => {
@@ -108,21 +122,16 @@ const page = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitMessage('');
-    
-    try{
-      await emailjs.sendForm(
-      config.EMAIL_SERVICE_ID,
-      config.EMAIL_TEMPLETE_ID,
-      form.current,
-      config.EMAIL_PUBLICE_KEY
-    );
-    } catch (error){
-      console.log(error);
-    }
-    
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      const response = await emailjs.sendForm(
+        config.EMAIL_SERVICE_ID,
+        config.EMAIL_TEMPLETE_ID,
+        form.current,
+        { publicKey: config.EMAIL_PUBLICE_KEY }
+      );
+
+      console.log('EmailJS Success:', response);
       setSubmitMessage('Thank you for your message! We will get back to you soon.');
       setFormData({
         name: '',
@@ -131,12 +140,14 @@ const page = () => {
         subject: '',
         message: '',
       });
+      if (form.current) form.current.reset();
+    } catch (error) {
+      const errDetails = error?.text || error?.message || JSON.stringify(error);
+      console.error('EmailJS Error Detail:', error?.status, errDetails, error);
+      setSubmitMessage(`Failed to send message (${error?.status || 'Error'}): ${errDetails}`);
+    } finally {
       setIsSubmitting(false);
-
-      setTimeout(() => {
-        setSubmitMessage('');
-      }, 5000);
-    }, 1500);
+    }
   };
 
   const IconComponent = ({ icon }) => {
@@ -234,7 +245,10 @@ const page = () => {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+            <form ref={form} onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+              {/* HIDDEN INPUTS FOR EMAILJS FIELD ALIASES */}
+              <input type="hidden" name="from_name" value={formData.name} />
+              <input type="hidden" name="from_email" value={formData.email} />
               {/* Name and Email Row */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                 {/* Name Input */}
@@ -344,7 +358,7 @@ const page = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 md:py-24 border-t border-white/10">
+        <div className="contact_cta max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-16 sm:py-20 md:py-24 border-t border-white/10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
             <div className="space-y-6 sm:space-y-8">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bebas uppercase tracking-wider leading-tight">

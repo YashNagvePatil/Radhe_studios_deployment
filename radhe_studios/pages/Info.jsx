@@ -1,5 +1,5 @@
-'use client'
 import React from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,22 +11,24 @@ const Info = () => {
     {
       name: "Akshay Pawar",
       role: "Co-Founder / Creative Director",
-      image: "Akshya pawar.PNG",
-      bio: "Pushing the boundaries of digital narrative for over a decade. Alex shapes the visual strategy and overarching artistic direction of every project."
+      image: "/Akshya pawar.webp",
+      bio: "Inspired by timeless Indian storytelling, Akshay built Radhe Studios to turn ideas into brands, and brands into stories worth remembering.Where ancient storytelling meets modern marketing."
     },
     {
-      name: "Arya Jain",
+      name: "Pragati Jain",
       role: "Co-Founder / Technical Lead",
-      image: "ARYA-JAIN.png",
-      bio: "An architect of smooth interactive experiences. Marcus bridges the gap between complex engineering and pixel-perfect design interfaces."
+      image: "/ARYA-JAIN.webp",
+      bio: "Inspired by the art of turning ideas into visual stories, Arya brings creativity to every frame at Radhe Studios. From concepts to visuals, transforming imagination into designs that make brands seen, remembered, and felt."
     }
   ];
 
   const team = [
-    { name: "Yash Nagve", role: "Mearn Stack dev/UX Designer", image: "/core_team/yash.jpeg" },
-    { name: "Om Ambat", role: "vedio Graphics Artist", image: "default.webp" },
-    { name: "Aditya Londhe", role: "Social Media Manager", image: "default.webp" },
-    { name: "Shivam Murtarker", role: "Full-Stack Developer", image: "default.webp" }
+    { name: "Yash Nagve", role: "Mearn Stack dev/UI Designer", image: "/default.webp" },
+    { name: "Om Ambat", role: "Video Editor", image: "/default.webp" },
+    { name: "Aditya Londhe", role: "Social Media Manager", image: "/default.webp" },
+    { name: "Shivam Murtarker", role: "Full-Stack Developer", image: "/default.webp" },
+    { name: "Jitendra kariya", role: "Talent management", image: "/default.webp" },
+    { name: "Nivrutii wagh", role: "VideoGraphy", image: "/default.webp" }
   ];
 
 
@@ -81,9 +83,11 @@ const Info = () => {
 
               {/* Image Frame with Premium Effects */}
               <div className="relative overflow-hidden aspect-[4/5] bg-gradient-to-br from-white/10 to-white/5 grayscale group-hover:grayscale-0 transition-all duration-700 ease-out rounded-lg shadow-2xl group-hover:shadow-amber-500/20">
-                <img
+                <Image
                   src={founder.image}
                   alt={founder.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="founder_img w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out"
                 />
                 {/* Premium overlay effects */}
@@ -131,9 +135,11 @@ const Info = () => {
 
               {/* Image Box with Premium Effects */}
               <div className="relative overflow-hidden aspect-square bg-gradient-to-br from-white/10 to-white/5 rounded-lg shadow-lg group-hover:shadow-amber-500/20 transition-shadow duration-500">
-                <img
+                <Image
                   src={member.image}
                   alt={member.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
                   className="team_img w-full h-full object-cover filter brightness-90 group-hover:brightness-110 group-hover:scale-110 transition-all duration-700 ease-out"
                 />
                 {/* Premium overlay */}

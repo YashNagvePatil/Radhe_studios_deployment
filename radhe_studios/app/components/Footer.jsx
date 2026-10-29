@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -22,10 +23,10 @@ const Footer = () => {
 
   // Services
   const services = [
-    { label: 'Political services', href: '/services/political' },
-    { label: 'Social Media Services', href: '/services/social_media' },
-    { label: 'Buisness Services', href: '/services/buisness' },
-  
+    { label: 'Political Marketing', href: '/services/political' },
+    { label: 'Social Media Marketing', href: '/services/social_media' },
+    { label: 'Buisness Marketing', href: '/services/buisness' },
+
   ];
 
   // Social links
@@ -226,15 +227,15 @@ const Footer = () => {
                 </li>
                 <li>
                   <a
-                    href="tel:+1234567890"
+                    href="tel:8010608195"
                     className="text-sm text-white/70 hover:text-amber-400 transition-colors duration-300 font-light"
                   >
-                    +1 (234) 567-890
+                    8010608195
                   </a>
                 </li>
                 <li className="text-sm text-white/70 font-light">
-                  123 Creative Street<br />
-                  Design City, DC 12345
+                  Shop No. 1 Shakun Plaza <br />Near Domino's <br />
+                  Jalna-431203
                 </li>
               </ul>
             </div>
@@ -280,13 +281,18 @@ const Footer = () => {
             {/* Left - Copyright and Brand */}
             <div className="space-y-3 sm:space-y-0">
               <div className="flex items-center gap-3 mb-3 sm:mb-0">
-                <div className="w-45 h-45  rounded-lg flex items-center justify-center">
-                  <span className="text-slate-950 font-bold text-sm"><img src="White-Line.png" alt="" /></span>
+                <div className="w-36 h-auto flex items-center justify-center">
+                  <Image
+                    src="/White-Line.webp"
+                    alt="Radhe Studios"
+                    width={160}
+                    height={40}
+                    className="w-full h-auto object-contain"
+                  />
                 </div>
-               
               </div>
               <p className="text-xs sm:text-sm text-white/50 font-light">
-                © 2024 Radhe Studios. All rights reserved.
+                © 2026 Radhe Studios. All rights reserved.
               </p>
             </div>
 

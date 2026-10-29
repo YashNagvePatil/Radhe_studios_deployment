@@ -1,7 +1,8 @@
- 'use client'
+'use client'
 
 import React, { useRef, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -9,71 +10,84 @@ import { useGSAP } from '@gsap/react'
 
 
 
-  gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger)
 
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const navRef = useRef(null)
 
 
 
   // 💡 Updated array structure to handle special dropdown sub-links
   const Links = [
-    { name: 'About Us', href: 'about_us' },
-    { 
-      name: 'Services', 
-      href: 'services',
+    { name: 'About Us', href: '/about_us' },
+    {
+      name: 'Services',
+      href: '/services',
       subLinks: [
-        { name: 'Political Services', href: '/services/political' },
-        { name: 'Business Services', href: '/services/buisness' },
-        { name: 'Influencer Services', href: '/services/social_media' },
+        { name: 'Political Marketing', href: '/services/political' },
+        { name: 'Business Marketing', href: '/services/buisness' },
+        { name: 'Influencer Marketing', href: '/services/social_media' },
       ]
     },
     // { name: 'Clients', href: 'Clients'},
     // { name: 'Our Work', href: 'OurWork'},
-    { name: 'Carrier', href: 'carrier'},
-    { name: 'Contact Us', href: 'contact' },
+    { name: 'Career', href: '/carrier' },
+    { name: 'Creators', href: '/creators' },
+    { name: 'Contact Us', href: '/contact' },
   ]
 
-   useGSAP(()=>{
+  useGSAP(() => {
     ScrollTrigger.create({
-      start:"top top",
-      end:"max",
-      onUpdate:(self)=>{
-        if (self.direction === 1){
-          gsap.to(navRef.current,{
-           yPercent:-100,
-           duration:0.1,
-           ease:"power2.out"
+      start: "top top",
+      end: "max",
+      onUpdate: (self) => {
+        // Show/hide gradient background based on scroll position
+        const scrollY = self.scroll()
+        setScrolled(scrollY > 50)
+
+        if (self.direction === 1) {
+          gsap.to(navRef.current, {
+            yPercent: -100,
+            duration: 0.1,
+            ease: "power2.out"
           })
         }
 
-       else if (self.direction  === -1){
-        gsap.to(navRef.current,{
-             yPercent:0,
-             duration:0.1,
-             ease:"power2.out"
-        })
-       }
+        else if (self.direction === -1) {
+          gsap.to(navRef.current, {
+            yPercent: 0,
+            duration: 0.1,
+            ease: "power2.out"
+          })
+        }
 
       }
     })
-   },[])
+  }, [])
 
 
-  
+
 
 
   return (
-    <nav ref={navRef} className="fixed top-0 left-0 w-full z-100 isolate transform translate-z-0 will-change-transform pointer-events-auto  bg-linear-to-tr from-amber-400 to-amber-900 transition-all duration-300">
+    <nav ref={navRef} className={`fixed top-0 left-0 w-full z-100 isolate transform translate-z-0 will-change-transform pointer-events-auto transition-all duration-500 ${scrolled ? 'bg-linear-to-tr from-amber-400 to-amber-900' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          
+
           {/* Brand Logo */}
           <div className="shrink-0">
-            <Link href="/" className="text-xl font-extrabold tracking-wider text-white font-bebas">
-              <img src="/white-line-tranasperent.png" alt="" className='w-45 img-blend-darken ' />
+            <Link href="/" className="text-xl font-extrabold tracking-wider text-white font-bebas block">
+              <Image
+                src="/white-line-tranasperent.webp"
+                alt="Radhe Studios Logo"
+                width={180}
+                height={45}
+                priority
+                className="w-44 h-auto object-contain img-blend-darken"
+              />
             </Link>
           </div>
 
@@ -89,8 +103,8 @@ const Navbar = () => {
                       <Link
                         href={link.href}
                         className="text-sm font-medium text-slate-300 group-hover:text-amber-400 transition-colors duration-200 tracking-wide font-inter flex items-center gap-1"
-                        onClick={(e)=>{
-                          if(link.href === "services"){
+                        onClick={(e) => {
+                          if (link.href === "services") {
                             e.preventDefault();
                           }
                         }}
